@@ -13,6 +13,7 @@ import com.bilingoal.collectionsandmaps.MainActivity;
 import com.bilingoal.collectionsandmaps.R;
 import com.bilingoal.collectionsandmaps.dto.GridViewItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GridViewAdapter extends BaseAdapter {
@@ -53,6 +54,12 @@ public class GridViewAdapter extends BaseAdapter {
         this.gridViewItems.clear();
         this.gridViewItems = gridViewItems;
         notifyDataSetChanged();
+    }
+
+    public List<String> getResults(){
+        List<String> arrayList = new ArrayList<>();
+        gridViewItems.forEach(item -> arrayList.add(item.getTime()));
+        return arrayList;
     }
 
     @Override

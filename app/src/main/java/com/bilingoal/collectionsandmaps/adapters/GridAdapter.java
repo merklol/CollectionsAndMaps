@@ -4,9 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bilingoal.collectionsandmaps.MainActivity;
@@ -16,30 +17,34 @@ import com.bilingoal.collectionsandmaps.dto.GridViewItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GridViewAdapter extends BaseAdapter {
-    private final LayoutInflater layoutInflater;
-    private final Context context;
+public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     private List<GridViewItem> gridViewItems;
+    private final Context context;
 
-    public GridViewAdapter(Context context, List<GridViewItem> gridViewItems) {
+    public GridAdapter(Context context, List<GridViewItem> gridViewItems) {
         this.context = context;
         this.gridViewItems = gridViewItems;
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.gridview_item_layout, parent,false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public int getCount() {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.title.setText(gridViewItems.get(position).getTitle());
+        holder.time.setText(gridViewItems.get(position).getTime());
+        holder.progressBar.setVisibility(gridViewItems.get(position).getProgressBarVisibility());
+    }
+
+    @Override
+    public int getItemCount() {
         return gridViewItems.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return gridViewItems.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
     }
 
     public void updateItemAt(int position, String time){
@@ -62,29 +67,14 @@ public class GridViewAdapter extends BaseAdapter {
         return arrayList;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if(convertView == null){
-            convertView = layoutInflater.inflate(R.layout.gridview_item_layout, parent, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-        viewHolder.title.setText(gridViewItems.get(position).getTitle());
-        viewHolder.time.setText(gridViewItems.get(position).getTime());
-        viewHolder.progressBar.setVisibility(gridViewItems.get(position).getProgressBarVisibility());
-        return convertView;
-    }
-
-    static class ViewHolder {
+    protected static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.title_view) TextView title;
         @BindView(R.id.time_view) TextView time;
         @BindView(R.id.progress_circular) ProgressBar progressBar;
 
-        public ViewHolder(View view) {
-            ButterKnife.bind(this, view);
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

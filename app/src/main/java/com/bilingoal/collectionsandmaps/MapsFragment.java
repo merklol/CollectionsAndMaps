@@ -5,27 +5,28 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.bilingoal.collectionsandmaps.adapters.GridViewAdapter;
+import com.bilingoal.collectionsandmaps.adapters.GridAdapter;
 import com.bilingoal.collectionsandmaps.dto.GridViewItem;
 import com.bilingoal.collectionsandmaps.utils.AsyncOperations;
 import com.bilingoal.collectionsandmaps.utils.Constants;
-import com.bilingoal.collectionsandmaps.utils.KeyboardHelper;
+import com.bilingoal.collectionsandmaps.utils.KeyboardUtil;
 import java.util.*;
 
 public class MapsFragment extends Fragment {
     @BindView(R.id.input_view) EditText inputView;
     @BindView(R.id.calc_btn) Button button;
-    @BindView(R.id.grid_view) GridView gridView;
-    private GridViewAdapter adapter;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    private GridAdapter adapter;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
@@ -48,20 +49,22 @@ public class MapsFragment extends Fragment {
         if(preferences != null) {
             String data = preferences.getString(Constants.MAPS_RESULT, null);
             if(data != null)
-                adapter =  new GridViewAdapter(requireContext(), populateGridView(View.GONE, data));
+                adapter = new GridAdapter(requireContext(), populateGridView(View.GONE, data));
             else
-                adapter =  new GridViewAdapter(requireContext(), repopulateGridView(View.GONE));
+                adapter = new GridAdapter(requireContext(), repopulateGridView(View.GONE));
         }
         else
-            adapter =  new GridViewAdapter(requireContext(), repopulateGridView(View.GONE));
+            adapter = new GridAdapter(requireContext(), repopulateGridView(View.GONE));
 
-        gridView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recyclerView.setAdapter(adapter);
+
         button.setOnClickListener(v -> {
             if (inputView.getText().toString().trim().equalsIgnoreCase("")) {
                 inputView.setError(getString(R.string.edit_text_error));
             } else {
                 adapter.addNewValues(repopulateGridView(View.VISIBLE));
-                KeyboardHelper.hideKeyboard(view);
+                KeyboardUtil.hideKeyboard(view);
                 new AsyncOperations.AsyncMapOperations(
                         getView(), adapter, Integer.parseInt(inputView.getText().toString())
                 ).execute();

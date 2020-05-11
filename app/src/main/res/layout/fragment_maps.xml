@@ -1,45 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:padding="12dp"
         tools:context=".MapsFragment">
-    <LinearLayout
-            android:layout_width="match_parent"
+    <TextView
+            android:id="@+id/label"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:text="@string/label"
-                android:textAlignment="center"/>
-        <EditText
-                android:id="@+id/input_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxLines="1"
-                android:inputType="number"
-                android:imeOptions="actionDone"
-                android:autofillHints="numbers"
-                android:layout_marginHorizontal="4dp"
-                android:hint="@string/edit_text_hint"/>
-    </LinearLayout>
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:text="@string/label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/input_view"
+            app:layout_constraintHorizontal_weight="1"
+           />
+    <EditText
+            android:id="@+id/input_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:inputType="number"
+            android:imeOptions="actionDone"
+            android:autofillHints="numbers"
+            android:hint="@string/edit_text_hint"
+            app:layout_constraintStart_toEndOf="@id/label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label"
+            app:layout_constraintBottom_toBottomOf="@+id/label"
+            app:layout_constraintHorizontal_weight="3"/>
     <Button
             android:id="@+id/calc_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_view"
+            app:layout_constraintStart_toStartOf="parent"
             android:text="@string/btn_text"/>
-    <GridView
-            android:id="@+id/grid_view"
-            android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:numColumns="2"/>
-
-</LinearLayout>
+            app:layout_constraintTop_toBottomOf="@id/calc_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

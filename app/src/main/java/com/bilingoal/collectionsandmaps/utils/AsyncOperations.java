@@ -3,7 +3,7 @@ package com.bilingoal.collectionsandmaps.utils;
 import android.os.AsyncTask;
 import android.view.View;
 import com.bilingoal.collectionsandmaps.R;
-import com.bilingoal.collectionsandmaps.adapters.GridViewAdapter;
+import com.bilingoal.collectionsandmaps.adapters.GridAdapter;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.ref.WeakReference;
@@ -13,14 +13,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class AsyncOperations {
 
     public static class AsyncListOperations extends AsyncTask<Void, Void, Void> {
-        private final GridViewAdapter adapter;
+        private final GridAdapter adapter;
         private final WeakReference<View> view;
         private final int size;
         private final ArrayList<Integer> arrayList = new ArrayList<>();
         private final LinkedList<Integer> linkedList = new LinkedList<>();
         private final CopyOnWriteArrayList<Integer> copyOnWriteArrayList = new CopyOnWriteArrayList<>();
 
-        public AsyncListOperations(View view, GridViewAdapter adapter, int size) {
+        public AsyncListOperations(View view, GridAdapter adapter, int size) {
             this.view = new WeakReference<>(view);
             this.adapter = adapter;
             this.size = size;
@@ -61,13 +61,13 @@ public class AsyncOperations {
     }
 
     public static class AsyncMapOperations extends AsyncTask<Void, Void, Void> {
-        private final GridViewAdapter adapter;
+        private final GridAdapter adapter;
         private final WeakReference<View> view;
         private final int size;
         private final HashMap<Integer, String> hashMap = new HashMap<>();
         private final TreeMap<Integer, String> treeMap = new TreeMap<>();
 
-        public AsyncMapOperations(View view, GridViewAdapter adapter, int size) {
+        public AsyncMapOperations(View view, GridAdapter adapter, int size) {
             this.view = new WeakReference<>(view);
             this.adapter = adapter;
             this.size = size;

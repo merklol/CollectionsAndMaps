@@ -6,42 +6,34 @@
     <string name="time">n/a</string>
     <string name="snackbar_message">Performance test is successfully completed!</string>
     <string name="edit_text_error">This field can not be blank</string>
+    <string name="tab_title_maps">Maps</string>
+    <string name="tab_title_collections">Collections</string>
 
-    <string name="add_beginning_arr_list">"Adding new elements at the beginning of the ArrayList"</string>
-    <string name="add_beginning_linked_list">"Adding new elements at the beginning of the LinkedList"</string>
-    <string name="add_beginning_cow_list">"Adding new elements at the beginning of the CopyOnWriteArrayList"</string>
-
-    <string name="add_middle_arr_list">Adding new elements in the middle of the ArrayList</string>
-    <string name="add_middle_linked_list">Adding new elements in the middle of the LinkedList</string>
-    <string name="add_middle_cow_list">Adding new elements in the middle of the CopyOnWriteArrayList</string>
-
-    <string name="add_end_arr_list">Adding new elements at the end of the ArrayList</string>
-    <string name="add_end_linked_list">Adding new elements at the end of the LinkedList</string>
-    <string name="add_end_cow_list">Adding new elements at the end of the CopyOnWriteArrayList</string>
-
-    <string name="search_arr_list">Searching in the ArrayList</string>
-    <string name="search_linked_list">Searching in the LinkedList</string>
-    <string name="search_cow_list">Searching in the CopyOnWriteArrayList</string>
-
-    <string name="rm_beginning_arr_list">Removing elements at the beginning of the ArrayList</string>
-    <string name="rm_beginning_linked_list">Removing elements at the beginning of the LinkedList</string>
-    <string name="rm_beginning_cow_list">Removing elements at the beginning of the CopyOnWriteArrayList</string>
-
-    <string name="rm_middle_arr_list">Removing elements in the middle of the ArrayList</string>
-    <string name="rm_middle_linked_list">Removing elements in the middle of the LinkedList</string>
-    <string name="rm_middle_cow_list">Removing elements in the middle of the CopyOnWriteArrayList</string>
-
-    <string name="rm_end_arr_list">Removing elements at the end of the ArrayList</string>
-    <string name="rm_end_linked_list">Removing elements at the end of the LinkedList</string>
-    <string name="rm_end_cow_list">Removing elements at the end of the CopyOnWriteArrayList</string>
-
-    <string name="add_hash_map">"Adding new elements to the HashMap"</string>
-    <string name="add_tree_map">"Adding new elements to the TreeMap"</string>
-
-    <string name="search_hash_map">"Searching in the HashMap"</string>
-    <string name="search_tree_map">"Searching in the TreeMap"</string>
-
-    <string name="rm_hash_map">"Removing elements from the HashMap"</string>
-    <string name="rm_tree_map">"Removing elements from the TreeMap"</string>
-
+    <string name="add_beginning_arr_list">ArrayList: AddItemsAtStart</string>
+    <string name="add_beginning_linked_list">LinkedList: AddItemsAtStart</string>
+    <string name="add_beginning_cow_list">"COWList: AddItemsAtStart"</string>
+    <string name="add_middle_arr_list">ArrayList: AddItemsInMiddle</string>
+    <string name="add_middle_linked_list">LinkedList: AddItemsInMiddle</string>
+    <string name="add_middle_cow_list">COWList: AddItemsInMiddle</string>
+    <string name="add_end_arr_list">ArrayList: AddItemsAtEnd</string>
+    <string name="add_end_linked_list">LinkedList: AddItemsAtEnd</string>
+    <string name="add_end_cow_list">COWList: AddItemsAtEnd</string>
+    <string name="search_arr_list">ArrayList: Search</string>
+    <string name="search_linked_list">LinkedList: Search</string>
+    <string name="search_cow_list">COWList:\nSearch</string>
+    <string name="rm_beginning_arr_list">ArrayList: RemoveItemsAtStart</string>
+    <string name="rm_beginning_linked_list">LinkedList: RemoveItemsAtStart</string>
+    <string name="rm_beginning_cow_list">COWList: RemoveItemsAtStart</string>
+    <string name="rm_middle_arr_list">ArrayList: RemoveItemsInMiddle</string>
+    <string name="rm_middle_linked_list">LinkedList: RemoveInMiddle</string>
+    <string name="rm_middle_cow_list">COWList: RemoveInMiddle</string>
+    <string name="rm_end_arr_list">ArrayList: RemoveItemsAtEnd</string>
+    <string name="rm_end_linked_list">LinkedList: RemoveItemsAtEnd</string>
+    <string name="rm_end_cow_list">COWList: RemoveItemsAtEnd</string>
+    <string name="add_hash_map">"HashMap: AddItems"</string>
+    <string name="add_tree_map">"TreeMap: AddItems"</string>
+    <string name="search_hash_map">"HashMap: Search "</string>
+    <string name="search_tree_map">"TreeMap: Search"</string>
+    <string name="rm_hash_map">"HashMap: RemoveItems"</string>
+    <string name="rm_tree_map">"TreeMap: RemoveItems"</string>
 </resources>

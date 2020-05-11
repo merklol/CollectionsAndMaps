@@ -37,9 +37,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.title.setText(gridViewItems.get(position).getTitle());
-        holder.time.setText(gridViewItems.get(position).getTime());
-        holder.progressBar.setVisibility(gridViewItems.get(position).getProgressBarVisibility());
+        holder.bindItem(gridViewItems.get(position));
     }
 
     @Override
@@ -50,7 +48,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     public void updateItemAt(int position, String time){
         ((MainActivity)context).runOnUiThread(() ->{
             gridViewItems.get(position).setTime(time);
-            gridViewItems.get(position).setProgressBarVisibility(View.GONE);
+            gridViewItems.get(position).setProgressBarVisibility(View.INVISIBLE);
             notifyDataSetChanged();
         });
     }
@@ -75,6 +73,12 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        public void bindItem(GridViewItem item){
+            title.setText(item.getTitle());
+            time.setText(item.getTime());
+            progressBar.setVisibility(item.getProgressBarVisibility());
         }
     }
 }

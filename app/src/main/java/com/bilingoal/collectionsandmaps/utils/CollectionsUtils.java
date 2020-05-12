@@ -2,27 +2,32 @@ package com.bilingoal.collectionsandmaps.utils;
 
 import com.google.common.base.Stopwatch;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class CollectionsUtils {
 
     public static String addItemsAtStart(List<Integer> list, int amount){
+        int value = new Random().nextInt(10);
+        list.addAll(Collections.nCopies(amount, value));
         Stopwatch stopwatch = Stopwatch.createStarted();
-        IntStream.range(0, amount).forEach(item -> list.add(0, item));
+        list.add(0, value);
         return stopwatch.toString();
     }
 
     public static String addItemsWithin(List<Integer> list, int position, int amount){
+        int value = new Random().nextInt(10);
+        list.addAll(Collections.nCopies(amount, value));
         Stopwatch stopwatch = Stopwatch.createStarted();
-        IntStream.range(0, amount).forEach(item -> list.add(position, item));
+        list.add(position, value);
         return stopwatch.toString();
     }
 
     public static String addItemsAtEnd(List<Integer> list, int amount){
+        int value = new Random().nextInt(10);
+        list.addAll(Collections.nCopies(amount, value));
         Stopwatch stopwatch = Stopwatch.createStarted();
-        IntStream.range(0, amount).forEach(list::add);
+        list.add(value);
         return stopwatch.toString();
     }
 
@@ -38,8 +43,10 @@ public class CollectionsUtils {
     }
 
     public static String addItems(Map<Integer, String> map, int amount){
-        Stopwatch stopwatch = Stopwatch.createStarted();
+        int value = new Random().nextInt(10);
         IntStream.range(0, amount).forEach(item -> map.put(item, String.valueOf(item)));
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        map.put(value, String.valueOf(value));
         return stopwatch.toString();
     }
 

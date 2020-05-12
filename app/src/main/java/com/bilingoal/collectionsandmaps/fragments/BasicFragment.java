@@ -26,11 +26,13 @@ public abstract class BasicFragment extends Fragment {
     @BindView(R.id.calc_btn) Button button;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     protected GridAdapter adapter;
-    private final int spanCount;
 
-    public BasicFragment(int spanCount) {
+    public BasicFragment() { }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        this.spanCount = spanCount;
     }
 
     @Nullable
@@ -44,22 +46,22 @@ public abstract class BasicFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         adapter = new GridAdapter(populate(View.INVISIBLE));
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), getSpanCount()));
         recyclerView.setAdapter(adapter);
-
         button.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(inputView.getText()) || Integer.parseInt(inputView.getText().toString()) == 0) {
+            String elements = inputView.getText().toString();
+            if (TextUtils.isEmpty(elements) || "0".equals(elements.trim())) {
                 inputView.setError(getString(R.string.edit_text_error));
             } else {
                 adapter.addNewValues(populate(View.VISIBLE));
                 KeyboardUtil.hideKeyboard(view);
-                onBtnClick();
+                onStartCalculationBtnClicked(Integer.parseInt(elements));
             }
         });
     }
 
+    public abstract int getSpanCount();
     public abstract List<GridViewItem> populate(int progressBarVisibility);
-    public abstract void onBtnClick();
+    public abstract void onStartCalculationBtnClicked(int elements);
 }

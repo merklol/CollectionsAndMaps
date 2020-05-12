@@ -52,9 +52,9 @@ public class AsyncOperations {
             publishProgress(CollectionsUtils.addItemsAtEnd(arrayList, size));
             publishProgress(CollectionsUtils.addItemsAtEnd(linkedList, size));
             publishProgress(CollectionsUtils.addItemsAtEnd(copyOnWriteArrayList, size));
-            publishProgress(CollectionsUtils.searchByValue(arrayList, size / 2));
-            publishProgress(CollectionsUtils.searchByValue(linkedList, size / 2));
-            publishProgress(CollectionsUtils.searchByValue(copyOnWriteArrayList, size / 2));
+            publishProgress(CollectionsUtils.searchByValue(arrayList, arrayList.get(new Random().nextInt(size))));
+            publishProgress(CollectionsUtils.searchByValue(linkedList, linkedList.get(new Random().nextInt(size))));
+            publishProgress(CollectionsUtils.searchByValue(copyOnWriteArrayList, copyOnWriteArrayList.get(new Random().nextInt(size))));
             publishProgress(CollectionsUtils.removeFromList(arrayList, 0));
             publishProgress(CollectionsUtils.removeFromList(linkedList, 0));
             publishProgress(CollectionsUtils.removeFromList(copyOnWriteArrayList, 0));

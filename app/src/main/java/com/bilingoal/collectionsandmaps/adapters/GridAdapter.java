@@ -1,6 +1,5 @@
 package com.bilingoal.collectionsandmaps.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bilingoal.collectionsandmaps.R;
 import com.bilingoal.collectionsandmaps.dto.GridViewItem;
-import com.bilingoal.collectionsandmaps.utils.Animations;
-
 import java.util.List;
 
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
@@ -34,8 +31,9 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bindItem(gridViewItems.get(position));
-
+        GridViewItem item = gridViewItems.get(position);
+        holder.bindItem(item);
+        holder.animate(item);
     }
 
     @Override
@@ -69,10 +67,15 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
         public void bindItem(GridViewItem item){
             title.setText(item.getTitle());
             time.setText(item.getTime());
+            progressBar.setVisibility(item.getProgressBarVisibility());
+        }
+
+        public void animate(GridViewItem item){
             if(item.isUpdated() && progressBar.getVisibility() == View.VISIBLE){
-                Animations.fadeOut(progressBar, GridViewItem.ANIMATION_LENGTH);
-            } else {
-                progressBar.setVisibility(item.getProgressBarVisibility());
+                progressBar.animate().alpha(0).setDuration(GridViewItem.ANIMATION_LENGTH_SHORT);
+            } else if(!item.isUpdated() && progressBar.getVisibility() == View.VISIBLE){
+                progressBar.setAlpha(0);
+                progressBar.animate().alpha(1).setDuration(GridViewItem.ANIMATION_LENGTH_LONG);
             }
         }
     }

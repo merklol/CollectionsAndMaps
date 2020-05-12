@@ -3,13 +3,18 @@ package com.bilingoal.collectionsandmaps.fragments;
 import com.bilingoal.collectionsandmaps.R;
 import com.bilingoal.collectionsandmaps.dto.GridViewItem;
 import com.bilingoal.collectionsandmaps.utils.AsyncOperations;
-
 import java.util.*;
 
 public class MapsFragment extends BasicFragment {
+    private int spanCount;
 
-    public MapsFragment(int spanCount) {
-        super(spanCount);
+    public void setSpanCount(int spanCount) {
+        this.spanCount = spanCount;
+    }
+
+    @Override
+    public int getSpanCount() {
+        return this.spanCount;
     }
 
     @Override
@@ -26,9 +31,7 @@ public class MapsFragment extends BasicFragment {
     }
 
     @Override
-    public void onBtnClick() {
-        new AsyncOperations.AsyncMapOperations(
-                getView(), adapter, Integer.parseInt(inputView.getText().toString())
-        ).execute();
+    public void onStartCalculationBtnClicked(int elements) {
+        new AsyncOperations.AsyncMapOperations(getView(), adapter, elements).execute();
     }
 }

@@ -5,7 +5,8 @@ public class GridViewItem {
     private String time;
     private int progressBarVisibility;
     private boolean isUpdated = false;
-    public final static int ANIMATION_LENGTH = 500;
+    public final static int ANIMATION_LENGTH_SHORT = 500;
+    public final static int ANIMATION_LENGTH_LONG = 2000;
 
     public GridViewItem(String title, String time, int progressBarVisibility) {
         this.title = title;

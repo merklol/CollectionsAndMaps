@@ -1,6 +1,7 @@
 package com.bilingoal.collectionsandmaps.fragments;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,12 +45,12 @@ public abstract class BasicFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        adapter = new GridAdapter(requireContext(), populate(View.INVISIBLE));
+        adapter = new GridAdapter(populate(View.INVISIBLE));
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
         recyclerView.setAdapter(adapter);
 
         button.setOnClickListener(v -> {
-            if (inputView.getText().toString().trim().equalsIgnoreCase("")) {
+            if (TextUtils.isEmpty(inputView.getText()) || Integer.parseInt(inputView.getText().toString()) == 0) {
                 inputView.setError(getString(R.string.edit_text_error));
             } else {
                 adapter.addNewValues(populate(View.VISIBLE));

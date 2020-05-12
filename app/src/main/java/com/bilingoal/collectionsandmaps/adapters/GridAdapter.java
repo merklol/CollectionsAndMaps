@@ -10,19 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.bilingoal.collectionsandmaps.MainActivity;
 import com.bilingoal.collectionsandmaps.R;
 import com.bilingoal.collectionsandmaps.dto.GridViewItem;
+import com.bilingoal.collectionsandmaps.utils.Animations;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     private List<GridViewItem> gridViewItems;
-    private final Context context;
 
-    public GridAdapter(Context context, List<GridViewItem> gridViewItems) {
-        this.context = context;
+    public GridAdapter(List<GridViewItem> gridViewItems) {
         this.gridViewItems = gridViewItems;
     }
 
@@ -38,6 +35,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bindItem(gridViewItems.get(position));
+
     }
 
     @Override
@@ -46,23 +44,16 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     }
 
     public void updateItemAt(int position, String time){
-        ((MainActivity)context).runOnUiThread(() ->{
-            gridViewItems.get(position).setTime(time);
-            gridViewItems.get(position).setProgressBarVisibility(View.INVISIBLE);
-            notifyDataSetChanged();
-        });
+        gridViewItems.get(position).setTime(time);
+        gridViewItems.get(position).setProgressBarVisibility(View.INVISIBLE);
+        gridViewItems.get(position).setUpdated(true);
+        notifyItemChanged(position);
     }
 
     public void addNewValues(List<GridViewItem> gridViewItems){
         this.gridViewItems.clear();
         this.gridViewItems = gridViewItems;
         notifyDataSetChanged();
-    }
-
-    public List<String> getResults(){
-        List<String> arrayList = new ArrayList<>();
-        gridViewItems.forEach(item -> arrayList.add(item.getTime()));
-        return arrayList;
     }
 
     protected static class ViewHolder extends RecyclerView.ViewHolder {
@@ -78,7 +69,11 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
         public void bindItem(GridViewItem item){
             title.setText(item.getTitle());
             time.setText(item.getTime());
-            progressBar.setVisibility(item.getProgressBarVisibility());
+            if(item.isUpdated() && progressBar.getVisibility() == View.VISIBLE){
+                Animations.fadeOut(progressBar, GridViewItem.ANIMATION_LENGTH);
+            } else {
+                progressBar.setVisibility(item.getProgressBarVisibility());
+            }
         }
     }
 }

@@ -5,7 +5,7 @@
     <string name="btn_text">Calculate</string>
     <string name="time">n/a</string>
     <string name="snackbar_message">Performance test is successfully completed!</string>
-    <string name="edit_text_error">This field can not be blank</string>
+    <string name="edit_text_error">This field can not be blank or equals 0</string>
     <string name="tab_title_maps">Maps</string>
     <string name="tab_title_collections">Collections</string>
 

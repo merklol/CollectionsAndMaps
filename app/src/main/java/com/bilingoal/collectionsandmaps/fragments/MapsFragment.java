@@ -3,22 +3,19 @@ package com.bilingoal.collectionsandmaps.fragments;
 import com.bilingoal.collectionsandmaps.R;
 import com.bilingoal.collectionsandmaps.dto.GridViewItem;
 import com.bilingoal.collectionsandmaps.utils.AsyncOperations;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsFragment extends BasicFragment {
-    private int spanCount;
-
-    public void setSpanCount(int spanCount) {
-        this.spanCount = spanCount;
-    }
 
     @Override
     public int getSpanCount() {
-        return this.spanCount;
+        return 2;
     }
 
     @Override
-    public List<GridViewItem> populate(int progressBarVisibility) {
+    public List<GridViewItem> populate(boolean progressBarVisibility) {
         List<GridViewItem> gridViewItems = new ArrayList<>();
         String time = getString(R.string.time);
         gridViewItems.add(new GridViewItem(getString(R.string.add_hash_map), time, progressBarVisibility));

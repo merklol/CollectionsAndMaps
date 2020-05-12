@@ -1,15 +1,18 @@
 package com.bilingoal.collectionsandmaps.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.bilingoal.collectionsandmaps.R;
 import com.bilingoal.collectionsandmaps.adapters.TabAdapter;
 import com.bilingoal.collectionsandmaps.fragments.CollectionsFragment;
 import com.bilingoal.collectionsandmaps.fragments.MapsFragment;
 import com.google.android.material.tabs.TabLayout;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.viewpager) ViewPager viewPager;
@@ -26,9 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(getSupportFragmentManager().getFragments().isEmpty()){
             collectionsFragment = new CollectionsFragment();
-            collectionsFragment.setSpanCount(3);
             mapsFragment = new MapsFragment();
-            mapsFragment.setSpanCount(2);
         }
         TabAdapter tabAdapter = new TabAdapter(getSupportFragmentManager());
         tabAdapter.addFragment(getResources().getString(R.string.tab_title_collections), collectionsFragment);

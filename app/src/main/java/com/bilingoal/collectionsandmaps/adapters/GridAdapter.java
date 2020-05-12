@@ -5,13 +5,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.bilingoal.collectionsandmaps.R;
 import com.bilingoal.collectionsandmaps.dto.GridViewItem;
+
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
     private List<GridViewItem> gridViewItems;
@@ -31,9 +35,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        GridViewItem item = gridViewItems.get(position);
-        holder.bindItem(item);
-        holder.animate(item);
+        holder.bindItem(gridViewItems.get(position));
     }
 
     @Override
@@ -43,7 +45,7 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
 
     public void updateItemAt(int position, String time){
         gridViewItems.get(position).setTime(time);
-        gridViewItems.get(position).setProgressBarVisibility(View.INVISIBLE);
+        gridViewItems.get(position).setProgressBarVisibility(false);
         gridViewItems.get(position).setUpdated(true);
         notifyItemChanged(position);
     }
@@ -54,29 +56,23 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    protected static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.title_view) TextView title;
         @BindView(R.id.time_view) TextView time;
         @BindView(R.id.progress_circular) ProgressBar progressBar;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindItem(GridViewItem item){
+        void bindItem(GridViewItem item) {
             title.setText(item.getTitle());
             time.setText(item.getTime());
-            progressBar.setVisibility(item.getProgressBarVisibility());
-        }
 
-        public void animate(GridViewItem item){
-            if(item.isUpdated() && progressBar.getVisibility() == View.VISIBLE){
-                progressBar.animate().alpha(0).setDuration(GridViewItem.ANIMATION_LENGTH_SHORT);
-            } else if(!item.isUpdated() && progressBar.getVisibility() == View.VISIBLE){
-                progressBar.setAlpha(0);
-                progressBar.animate().alpha(1).setDuration(GridViewItem.ANIMATION_LENGTH_LONG);
-            }
+            final float alpha = item.getProgressBarVisibility() ? 1 : 0;
+            final int duration = item.getProgressBarVisibility() ? GridViewItem.ANIMATION_LENGTH_LONG : GridViewItem.ANIMATION_LENGTH_SHORT;
+            progressBar.animate().alpha(alpha).setDuration(duration).start();
         }
     }
 }

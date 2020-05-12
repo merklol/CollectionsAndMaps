@@ -3,12 +3,12 @@ package com.bilingoal.collectionsandmaps.dto;
 public class GridViewItem {
     private String title;
     private String time;
-    private int progressBarVisibility;
+    private boolean progressBarVisibility;
     private boolean isUpdated = false;
     public final static int ANIMATION_LENGTH_SHORT = 500;
     public final static int ANIMATION_LENGTH_LONG = 2000;
 
-    public GridViewItem(String title, String time, int progressBarVisibility) {
+    public GridViewItem(String title, String time, boolean progressBarVisibility) {
         this.title = title;
         this.time = time;
         this.progressBarVisibility = progressBarVisibility;
@@ -22,7 +22,7 @@ public class GridViewItem {
         return time;
     }
 
-    public int getProgressBarVisibility() {
+    public boolean getProgressBarVisibility() {
         return progressBarVisibility;
     }
 
@@ -34,7 +34,7 @@ public class GridViewItem {
         this.time = time;
     }
 
-    public void setProgressBarVisibility(int progressBarVisibility) {
+    public void setProgressBarVisibility(boolean progressBarVisibility) {
         this.progressBarVisibility = progressBarVisibility;
     }
 

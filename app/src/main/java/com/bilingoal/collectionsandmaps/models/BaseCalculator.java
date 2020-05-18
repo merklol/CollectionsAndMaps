@@ -1,52 +1,51 @@
 package com.bilingoal.collectionsandmaps.models;
 
-import android.os.Bundle;
-import android.os.Message;
-import com.bilingoal.collectionsandmaps.utils.UIHandler;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.stream.IntStream;
 
-public abstract class BaseCalculator  {
-    protected UIHandler uiHandler;
-    protected int position = 0;
-    protected int elements;
-    private ExecutorService service;
+public abstract class BaseCalculator {
+    private int elements;
+    protected OnTaskCompleteListener listener;
 
-    public void calculate(int poolSize){
-        try{
-            service = Executors.newFixedThreadPool(poolSize);
-            service.execute(getCalculationTask());
-        } finally {
-            service.shutdown();
-            position = 0;
-        }
+    public interface OnTaskCompleteListener{
+        void onComplete(int position, String elapsedTime);
     }
 
-    protected void sendMessage(String elapsedTime) {
-        Message message = new Message();
-        Bundle bundle = new Bundle();
-        bundle.putInt(UIHandler.POSITION, position);
-        bundle.putString(UIHandler.ELAPSED_TIME, elapsedTime);
-        message.setData(bundle);
-        uiHandler.sendMessage(message);
-        position++;
+    public void setOnTaskCompleted(OnTaskCompleteListener onTaskCompleted) {
+        this.listener = onTaskCompleted;
     }
 
-    protected abstract Runnable getCalculationTask();
+    public abstract List<Runnable> getCalculationTasks();
 
     public void setElements(int elements) {
         this.elements = elements;
     }
 
-    public void setHandler(UIHandler handler) {
-        this.uiHandler = handler;
+    protected int getElements() {
+        return elements;
     }
 
-    protected void onCompleteTask() {
-        Message message = new Message();
-        Bundle bundle = new Bundle();
-        bundle.putBoolean(UIHandler.COMPLETED_TASK, true);
-        message.setData(bundle);
-        uiHandler.sendMessage(message);
+    protected List<Integer> createList(Class<?> clazz){
+        int value = new Random().nextInt(10);
+        if(clazz.equals(ArrayList.class)){
+            return new ArrayList<>(Collections.nCopies(elements, value));
+        } else if(clazz.equals(LinkedList.class)){
+            return new LinkedList<>(Collections.nCopies(elements, value));
+        } else {
+            return new CopyOnWriteArrayList<>(Collections.nCopies(elements, value));
+        }
+    }
+
+    protected Map<Integer, String> createMap(Class<?> clazz){
+        Map<Integer, String> map;
+        if(clazz.equals(HashMap.class)){
+            map = new HashMap<>();
+            IntStream.range(0, elements).forEach(item -> map.put(item, String.valueOf(item)));
+        } else {
+            map = new TreeMap<>();
+            IntStream.range(0, elements).forEach(item -> map.put(item, String.valueOf(item)));
+        }
+        return map;
     }
 }

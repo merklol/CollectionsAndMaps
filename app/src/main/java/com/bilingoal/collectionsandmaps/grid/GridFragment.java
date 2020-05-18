@@ -1,6 +1,7 @@
-package com.bilingoal.collectionsandmaps.fragment;
+package com.bilingoal.collectionsandmaps.grid;
 
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,28 +15,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bilingoal.collectionsandmaps.R;
 import com.bilingoal.collectionsandmaps.adapters.GridAdapter;
 import com.bilingoal.collectionsandmaps.dto.GridViewItem;
-import com.bilingoal.collectionsandmaps.utils.Constants;
 import com.bilingoal.collectionsandmaps.utils.KeyboardUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bilingoal.collectionsandmaps.utils.UIHandler;
 import com.google.android.material.snackbar.Snackbar;
-
 import java.util.List;
 import java.util.Objects;
 
-public class BasicFragment extends Fragment implements BasicFragmentContract.View {
+public class GridFragment extends Fragment implements GridContract.View {
     @BindView(R.id.input_view) EditText inputView;
     @BindView(R.id.calc_btn) Button button;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
     protected GridAdapter adapter;
-    private BasicFragmentPresenter presenter;
+    private GridPresenter presenter;
+    private UIHandler uiHandler;
+    public static final String FRAGMENT_TYPE = "type";
 
-    public BasicFragment() { }
+    public GridFragment() { }
 
-    public static BasicFragment createInstance(String type) {
+    public static GridFragment createInstance(String type) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.FRAGMENT_TYPE, type);
-        BasicFragment fragment = new BasicFragment();
+        bundle.putString(FRAGMENT_TYPE, type);
+        GridFragment fragment = new GridFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -46,12 +48,13 @@ public class BasicFragment extends Fragment implements BasicFragmentContract.Vie
         setRetainInstance(true);
         Bundle bundle = getArguments();
         if(bundle != null){
-            String type = getArguments().getString(Constants.FRAGMENT_TYPE);
+            String type = getArguments().getString(FRAGMENT_TYPE);
             if(type != null){
-                presenter = new BasicFragmentInjector().createPresenter(type);
+                presenter = new GridFragmentInjector().createPresenter(type);
             }
         }
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,40 +69,45 @@ public class BasicFragment extends Fragment implements BasicFragmentContract.Vie
         adapter = new GridAdapter(presenter.getInitialResult(false));
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), presenter.getSpanCount()));
         recyclerView.setAdapter(adapter);
-        button.setOnClickListener(v -> presenter.startCalculation(inputView.getText().toString()));
+        button.setOnClickListener(v -> presenter.startCalculation(inputView.getText().toString(), uiHandler));
     }
 
     @Override
-    public void setError(String error) {
-        inputView.setError(getString(R.string.edit_text_error));
+    public void setError(int resId) {
+        inputView.setError(getString(resId));
     }
 
     @Override
-    public void addInitialValues(List<GridViewItem> items) {
-        adapter.addNewValues(items);
+    public void setItems(List<GridViewItem> items) {
+        adapter.setItems(items);
         KeyboardUtil.hideKeyboard(Objects.requireNonNull(getView()));
     }
 
     @Override
-    public void updateAdapterItem(int position, String value) {
+    public void updateAdapter(int position, String value) {
         adapter.updateItemAt(position, value);
+        if(adapter.allItemsAreUpdated()) {
+            Snackbar.make(
+                    Objects.requireNonNull(getView()), getString(R.string.snackbar_message), Snackbar.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     @Override
-    public void displaySnackBar() {
-        Snackbar.make(Objects.requireNonNull(getView()), getResources().getString(R.string.snackbar_message), Snackbar.LENGTH_SHORT)
-                .show();
+    public void notifyItemUpdated(int position, String elapsedTime) {
+        uiHandler.notifyItemUpdated(position, elapsedTime);
     }
 
     @Override
     public void onStart() {
         super.onStart();
         presenter.attachView(this);
+        uiHandler = new UIHandler(Looper.getMainLooper(), this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenter.detachView();;
+        presenter.detachView();
     }
 }

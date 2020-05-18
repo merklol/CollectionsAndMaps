@@ -5,16 +5,14 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import androidx.annotation.NonNull;
-import com.bilingoal.collectionsandmaps.fragment.BasicFragmentContract;
+import com.bilingoal.collectionsandmaps.grid.GridContract;
 
 public class UIHandler extends Handler {
-    private final BasicFragmentContract.View view;
+    private final GridContract.View view;
     public static final String POSITION = "position";
-    public static final String COMPLETED_TASK = "completed";
     public static final String ELAPSED_TIME = "elapsed_time";
 
-
-    public UIHandler(@NonNull Looper looper, BasicFragmentContract.View view) {
+    public UIHandler(@NonNull Looper looper, GridContract.View view) {
         super(looper);
         this.view = view;
     }
@@ -23,14 +21,17 @@ public class UIHandler extends Handler {
     public void handleMessage(@NonNull Message msg) {
         super.handleMessage(msg);
         Bundle bundle = msg.getData();
-        boolean completed = bundle.getBoolean(COMPLETED_TASK);
         int position = bundle.getInt(POSITION);
         String elapsedTime = bundle.getString(ELAPSED_TIME);
+        view.updateAdapter(position, elapsedTime);
+    }
 
-        if(completed) {
-            view.displaySnackBar();
-        } else {
-            view.updateAdapterItem(position, elapsedTime);
-        }
+    public void notifyItemUpdated(int position, String elapsedTime) {
+        Message message = new Message();
+        Bundle bundle = new Bundle();
+        bundle.putInt(UIHandler.POSITION, position);
+        bundle.putString(UIHandler.ELAPSED_TIME, elapsedTime);
+        message.setData(bundle);
+        sendMessage(message);
     }
 }

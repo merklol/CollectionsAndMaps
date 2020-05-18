@@ -1,36 +1,23 @@
-package com.bilingoal.collectionsandmaps.fragment;
+package com.bilingoal.collectionsandmaps.grid;
 
-import android.os.Looper;
 import android.text.TextUtils;
-import com.bilingoal.collectionsandmaps.App;
 import com.bilingoal.collectionsandmaps.R;
+import com.bilingoal.collectionsandmaps.base.BasePresenter;
 import com.bilingoal.collectionsandmaps.dto.GridViewItem;
 import com.bilingoal.collectionsandmaps.models.BaseCalculator;
 import com.bilingoal.collectionsandmaps.models.TaskSupplier;
 import com.bilingoal.collectionsandmaps.utils.UIHandler;
-
 import java.util.List;
+import java.util.concurrent.*;
 
-public class BasicFragmentPresenter implements BasicFragmentContract.Presenter<BasicFragmentContract.View> {
-    protected BasicFragmentContract.View view;
+public class GridPresenter extends BasePresenter<GridContract.View> implements GridContract.Presenter<GridContract.View> {
     private final TaskSupplier tasksSupplier;
-    private UIHandler uiHandler;
     private final BaseCalculator calculator;
+    private ExecutorService service;
 
-    public BasicFragmentPresenter(TaskSupplier tasksSupplier, BaseCalculator calculator) {
+    public GridPresenter(TaskSupplier tasksSupplier, BaseCalculator calculator) {
         this.tasksSupplier = tasksSupplier;
         this.calculator = calculator;
-    }
-
-    @Override
-    public void attachView(BasicFragmentContract.View view) {
-        this.view = view;
-        this.uiHandler = new UIHandler(Looper.getMainLooper(), view);
-    }
-
-    @Override
-    public void detachView() {
-        this.view = null;
     }
 
     @Override
@@ -44,14 +31,19 @@ public class BasicFragmentPresenter implements BasicFragmentContract.Presenter<B
     }
 
     @Override
-    public void startCalculation(String elements) {
+    public void startCalculation(String elements, UIHandler handler) {
         if (TextUtils.isEmpty(elements) || "0".equals(elements.trim())) {
-            view.setError(App.getContext().getString(R.string.edit_text_error));
+            view.setError(R.string.edit_text_error);
         } else {
-            view.addInitialValues(getInitialResult(true));
-            calculator.setHandler(uiHandler);
+            view.setItems(getInitialResult(true));
             calculator.setElements(Integer.parseInt(elements));
-            calculator.calculate(Runtime.getRuntime().availableProcessors() * 2);
+            calculator.setOnTaskCompleted((position, elapsedTime) -> view.notifyItemUpdated(position, elapsedTime));
+            try{
+                service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+                calculator.getCalculationTasks().forEach(runnable -> service.submit(runnable));;
+            } finally {
+                service.shutdown();
+            }
         }
     }
 }

@@ -50,10 +50,14 @@ public class GridAdapter extends RecyclerView.Adapter<GridAdapter.ViewHolder> {
         notifyItemChanged(position);
     }
 
-    public void addNewValues(List<GridViewItem> gridViewItems){
+    public void setItems(List<GridViewItem> gridViewItems){
         this.gridViewItems.clear();
         this.gridViewItems = gridViewItems;
         notifyDataSetChanged();
+    }
+
+    public boolean allItemsAreUpdated() {
+        return gridViewItems.stream().allMatch(GridViewItem::isUpdated);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

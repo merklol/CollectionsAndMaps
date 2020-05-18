@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import com.bilingoal.collectionsandmaps.R;
 import com.bilingoal.collectionsandmaps.adapters.TabAdapter;
-import com.bilingoal.collectionsandmaps.fragment.BasicFragment;
-import com.bilingoal.collectionsandmaps.utils.Constants;
+import com.bilingoal.collectionsandmaps.grid.GridContract;
+import com.bilingoal.collectionsandmaps.grid.GridFragment;
 import com.google.android.material.tabs.TabLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
-    private BasicFragment collections, maps;
+    private GridFragment collections, maps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         if(getSupportFragmentManager().getFragments().isEmpty()){
-            collections = BasicFragment.createInstance(Constants.FRAGMENT_COLLECTIONS);
-            maps= BasicFragment.createInstance(Constants.FRAGMENT_MAPS);
+            collections = GridFragment.createInstance(GridContract.COLLECTIONS);
+            maps= GridFragment.createInstance(GridContract.MAPS);
         }
         TabAdapter tabAdapter = new TabAdapter(getSupportFragmentManager());
         tabAdapter.addFragment(getResources().getString(R.string.tab_title_collections), collections);
